@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Student Writing Interface</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "paper-light": "#ffffff",
+                        "paper-dark": "#1a2634",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for better visual integration */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+        
+        /* Disable native spellcheck styling cues if browser overrides */
+        textarea::spelling-error { text-decoration: none; }
+        textarea::grammar-error { text-decoration: none; }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden bg-background-light dark:bg-background-dark text-[#111418] dark:text-white font-display">
+<!-- Global Assessment Header -->
+<header class="shrink-0 flex items-center justify-between border-b border-solid border-[#e5e7eb] dark:border-gray-800 bg-white dark:bg-[#1a2634] px-6 py-3 h-18 shadow-sm z-10">
+<!-- Left: Student Info -->
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center size-10 rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-2xl">person</span>
+</div>
+<div>
+<h2 class="text-sm font-medium text-slate-500 dark:text-slate-400 leading-tight">Student</h2>
+<p class="text-base font-bold leading-tight">Alex Smith</p>
+</div>
+</div>
+<!-- Center: Timer -->
+<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+<div class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-gray-800 border border-slate-200 dark:border-gray-700">
+<span class="material-symbols-outlined text-primary text-xl">timer</span>
+<span class="text-xl font-bold tracking-tight font-mono text-slate-800 dark:text-slate-100">38:00</span>
+</div>
+</div>
+<!-- Right: Actions & Stats -->
+<div class="flex items-center gap-6">
+<div class="flex flex-col items-end hidden sm:flex">
+<span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Word Count</span>
+<span class="text-base font-bold">145</span>
+</div>
+<button class="flex items-center justify-center gap-2 h-10 px-6 cursor-pointer overflow-hidden rounded-lg bg-primary hover:bg-primary/90 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-sm shadow-primary/20">
+<span>Finish Assessment</span>
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Split Layout -->
+<main class="flex flex-1 overflow-hidden">
+<!-- Left Panel: Stimulus Zone (40%) -->
+<section class="w-full md:w-5/12 bg-background-light dark:bg-background-dark border-r border-[#e5e7eb] dark:border-gray-800 flex flex-col overflow-hidden">
+<div class="overflow-y-auto p-8 lg:p-10 scroll-smooth h-full">
+<div class="max-w-[640px] mx-auto space-y-6">
+<!-- Prompt Tag -->
+<div class="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-primary text-xs font-bold uppercase tracking-wider">
+                        Narrative Prompt
+                    </div>
+<!-- Heading -->
+<h1 class="text-[#111418] dark:text-white tracking-tight text-3xl md:text-4xl font-bold leading-tight">
+                        The Mysterious Box
+                    </h1>
+<!-- Hero Image -->
+<div class="w-full rounded-xl overflow-hidden shadow-sm border border-slate-200 dark:border-gray-700">
+<div class="w-full aspect-video bg-cover bg-center bg-no-repeat" data-alt="Close up photo of an old dusty wooden treasure chest in a dimly lit attic" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBPLg2Q45JglTSBVQZnXekzW5ShyVToFZZxKNn3wGePgIFQ4-csw6S2lUsPbh5vcvezJm5iEGACFJUZBkqzCKtKODeqrC_q05lhkIf6E--bVDzehwbva53MjoWItIGq58JMi7zplNKV2ekJTIvobtO5iMtuWprk2Yh-whbO-gwVfAWZQMlGCAFgA-EFViqJrR_kJPMnwDcvrm1OyCq5dBci8yM0q6B1IYhCDeZKTOEMBf0MssqCuCTQpvOuYrQYkH7f1XiQ1nkxmIc');">
+</div>
+</div>
+<!-- Instructions -->
+<div class="prose prose-slate dark:prose-invert max-w-none">
+<div class="p-6 bg-white dark:bg-[#1e293b] rounded-xl border border-slate-200 dark:border-gray-700 shadow-sm">
+<h3 class="flex items-center gap-2 text-lg font-bold mb-3 text-slate-800 dark:text-slate-100">
+<span class="material-symbols-outlined text-primary">lightbulb</span>
+                                Task Instructions
+                            </h3>
+<p class="text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                                Look at the image above. Imagine you have just discovered this box in an old attic.
+                            </p>
+<ul class="space-y-2 list-none pl-0 text-slate-600 dark:text-slate-300">
+<li class="flex gap-3 items-start">
+<span class="mt-1 size-1.5 rounded-full bg-primary shrink-0"></span>
+<span>Write a narrative about what happens when the box is opened.</span>
+</li>
+<li class="flex gap-3 items-start">
+<span class="mt-1 size-1.5 rounded-full bg-primary shrink-0"></span>
+<span>Think about the characters, setting, and plot.</span>
+</li>
+<li class="flex gap-3 items-start">
+<span class="mt-1 size-1.5 rounded-full bg-primary shrink-0"></span>
+<span>Remember to check your spelling and punctuation carefully.</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Panel: Composition Zone (60%) -->
+<section class="w-full md:w-7/12 flex flex-col bg-paper-light dark:bg-paper-dark relative">
+<!-- Editor Toolbar -->
+<div class="flex items-center gap-1 px-4 py-2 border-b border-[#e5e7eb] dark:border-gray-700 bg-white dark:bg-[#1a2634] shrink-0">
+<button class="p-2 rounded hover:bg-slate-100 dark:hover:bg-gray-700 text-slate-600 dark:text-slate-400 transition-colors" title="Bold">
+<span class="material-symbols-outlined text-[20px]">format_bold</span>
+</button>
+<button class="p-2 rounded hover:bg-slate-100 dark:hover:bg-gray-700 text-slate-600 dark:text-slate-400 transition-colors" title="Italic">
+<span class="material-symbols-outlined text-[20px]">format_italic</span>
+</button>
+<button class="p-2 rounded hover:bg-slate-100 dark:hover:bg-gray-700 text-slate-600 dark:text-slate-400 transition-colors" title="Underline">
+<span class="material-symbols-outlined text-[20px]">format_underlined</span>
+</button>
+<div class="w-px h-6 bg-slate-200 dark:bg-gray-700 mx-2"></div>
+<button class="p-2 rounded hover:bg-slate-100 dark:hover:bg-gray-700 text-slate-600 dark:text-slate-400 transition-colors" title="Bullet List">
+<span class="material-symbols-outlined text-[20px]">format_list_bulleted</span>
+</button>
+<div class="ml-auto flex items-center gap-2 px-3 py-1 rounded bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-xs font-medium">
+<span class="material-symbols-outlined text-[16px]">cloud_done</span>
+<span>Saved</span>
+</div>
+</div>
+<!-- Text Editor Area -->
+<!-- Note: spellcheck="false" is crucial for the assessment context -->
+<div class="flex-1 relative group cursor-text">
+<textarea autocapitalize="off" autocomplete="off" autocorrect="off" class="w-full h-full p-8 lg:p-12 text-lg leading-loose resize-none focus:outline-none bg-transparent border-none text-slate-800 dark:text-slate-200 placeholder-slate-300 dark:placeholder-slate-600" id="student-editor" placeholder="Start typing your story here..." spellcheck="false">The attic was silent, save for the rhythmic drumming of rain against the roof tiles. Dust motes danced in the single beam of light struggling through the grimy window. In the corner, almost hidden beneath a moth-eaten blanket, sat the box. It wasn't just any box; it hummed with a low, barely audible vibration that I felt in my teeth rather than heard with my ears. My grandfather had warned me never to go up there, but curiosity is a powerful thing...</textarea>
+<!-- Focus Indicator (Subtle bottom bar) -->
+<div class="absolute bottom-0 left-0 w-full h-0.5 bg-primary opacity-0 transition-opacity group-focus-within:opacity-100"></div>
+</div>
+<!-- Editor Footer / Status -->
+<div class="shrink-0 px-6 py-2 bg-white dark:bg-[#1a2634] border-t border-[#e5e7eb] dark:border-gray-800 flex justify-between items-center text-xs text-slate-400">
+<span>Assessment Mode Active</span>
+<span>Spellcheck: Disabled</span>
+</div>
+</section>
+</main>
+</body></html>

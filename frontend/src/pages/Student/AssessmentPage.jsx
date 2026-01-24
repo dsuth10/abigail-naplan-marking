@@ -3,25 +3,30 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { studentApi } from '../../services/api';
 import SplitScreenLayout from '../../components/Editor/SplitScreenLayout';
 import Editor from '../../components/Editor/Editor';
+import ThemeToggle from '../../components/ThemeToggle';
 import { debounce } from 'lodash';
 
 const AssessmentPage = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
   const [project, setProject] = useState(null);
+  const [student, setStudent] = useState(null);
   const [submission, setSubmission] = useState(null);
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(40 * 60); // 40 minutes in seconds
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [projRes, subRes] = await Promise.all([
+        const [projRes, studentRes, subRes] = await Promise.all([
           studentApi.getProject(projectId),
+          studentApi.getMe(),
           studentApi.getSubmission(projectId),
         ]);
         setProject(projRes.data);
+        setStudent(studentRes.data);
         if (subRes.data) {
           setSubmission(subRes.data);
           setContent(subRes.data.content_raw);
@@ -35,6 +40,23 @@ const AssessmentPage = () => {
     };
     fetchData();
   }, [projectId, navigate]);
+
+  // Timer countdown
+  useEffect(() => {
+    if (timeRemaining <= 0 || submission?.status === 'SUBMITTED') return;
+    
+    const interval = setInterval(() => {
+      setTimeRemaining((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [timeRemaining, submission]);
 
   // Debounced autosave
   const debouncedSave = useCallback(
@@ -57,7 +79,7 @@ const AssessmentPage = () => {
   };
 
   const handleSubmit = async () => {
-    if (!window.confirm('Are you sure you want to submit your writing? You won\'t be able to edit it anymore.')) {
+    if (!window.confirm('Are you sure you want to finish your assessment? You won\'t be able to edit it anymore.')) {
       return;
     }
 
@@ -70,10 +92,18 @@ const AssessmentPage = () => {
     }
   };
 
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const wordCount = content.trim().split(/\s+/).filter(word => word.length > 0).length;
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="flex items-center justify-center h-screen bg-background-light dark:bg-background-dark">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
@@ -81,54 +111,56 @@ const AssessmentPage = () => {
   const isSubmitted = submission?.status === 'SUBMITTED';
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
-      <header className="bg-white shadow-sm px-6 py-4 flex justify-between items-center z-10">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => navigate('/projects')}
-            className="text-gray-500 hover:text-gray-700 font-medium flex items-center gap-2"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
-            </svg>
-            Back to Projects
-          </button>
-          <div className="h-6 w-px bg-gray-200"></div>
-          <h1 className="text-xl font-bold text-gray-800">{project.title}</h1>
-          <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${project.genre === 'NARRATIVE' ? 'bg-purple-100 text-purple-700' : 'bg-orange-100 text-orange-700'
-            }`}>
-            {project.genre}
-          </span>
+    <div className="flex flex-col h-screen overflow-hidden bg-background-light dark:bg-background-dark text-[#111418] dark:text-white font-display">
+      {/* Global Assessment Header */}
+      <header className="shrink-0 flex items-center justify-between border-b border-solid border-[#e5e7eb] dark:border-gray-800 bg-white dark:bg-[#1a2634] px-6 py-3 h-18 shadow-sm z-10">
+        {/* Left: Student Info */}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center size-10 rounded-full bg-primary/10 text-primary">
+            <span className="material-symbols-outlined text-2xl">person</span>
+          </div>
+          <div>
+            <h2 className="text-sm font-medium text-slate-500 dark:text-slate-300 leading-tight font-body">Student</h2>
+            <p className="text-base font-bold leading-tight font-display">{student?.name || 'Student'}</p>
+          </div>
         </div>
-
-        <div className="flex items-center gap-6">
-          {saving && <span className="text-sm text-blue-500 animate-pulse font-medium">Saving...</span>}
-          {isSubmitted ? (
-            <span className="bg-green-100 text-green-700 px-4 py-2 rounded-lg font-bold flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              SUBMITTED
+        
+        {/* Center: Timer */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+          <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-gray-800 border border-slate-200 dark:border-gray-700">
+            <span className="material-symbols-outlined text-primary text-xl">timer</span>
+            <span className="text-xl font-bold tracking-tight font-mono text-slate-800 dark:text-slate-100">
+              {formatTime(timeRemaining)}
             </span>
-          ) : (
-            <button
-              onClick={handleSubmit}
-              className="bg-green-600 text-white px-8 py-2 rounded-lg font-bold hover:bg-green-700 transition-all shadow-md transform hover:scale-105"
-            >
-              Submit My Writing
-            </button>
-          )}
+          </div>
+        </div>
+        
+        {/* Right: Actions & Stats */}
+        <div className="flex items-center gap-4">
+          <ThemeToggle />
+          <div className="flex flex-col items-end hidden sm:flex">
+            <span className="text-xs font-medium text-slate-400 dark:text-slate-300 uppercase tracking-wider font-body">Word Count</span>
+            <span className="text-base font-bold font-display">{wordCount}</span>
+          </div>
+          <button
+            onClick={handleSubmit}
+            disabled={isSubmitted}
+            className="flex items-center justify-center gap-2 h-10 px-6 cursor-pointer overflow-hidden rounded-lg bg-primary hover:bg-primary/90 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-sm shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed font-display"
+          >
+            <span>Finish Assessment</span>
+            <span className="material-symbols-outlined text-[18px]">check_circle</span>
+          </button>
         </div>
       </header>
 
-      {/* Main Content */}
+      {/* Main Split Layout */}
       <main className="flex-1 overflow-hidden">
         <SplitScreenLayout stimulus={project}>
           <Editor
             value={content}
             onChange={handleContentChange}
             disabled={isSubmitted}
+            saving={saving}
           />
         </SplitScreenLayout>
       </main>

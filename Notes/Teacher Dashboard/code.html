@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Teacher Dashboard Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;family=Noto+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white overflow-hidden selection:bg-primary/20">
+<div class="flex h-screen w-full">
+<!-- Sidebar -->
+<aside class="hidden lg:flex w-72 flex-col justify-between bg-white dark:bg-[#1a2632] border-r border-[#dbe0e6] dark:border-gray-800 p-4 h-full shrink-0">
+<div class="flex flex-col gap-6">
+<!-- Brand -->
+<div class="flex items-center gap-3 px-2">
+<div class="bg-primary/10 flex items-center justify-center rounded-xl size-10">
+<span class="material-symbols-outlined text-primary" style="font-size: 24px;">school</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-[#111418] dark:text-white">WriteSmart</h1>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl bg-primary/10 text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-size: 24px; font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-sm font-semibold">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-[#617589] dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#111418] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-size: 24px;">group</span>
+<span class="text-sm font-medium">My Classes</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-[#617589] dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#111418] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-size: 24px;">folder_open</span>
+<span class="text-sm font-medium">Projects</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-[#617589] dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#111418] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-size: 24px;">visibility</span>
+<span class="text-sm font-medium">Monitoring</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-[#617589] dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#111418] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-size: 24px;">bar_chart</span>
+<span class="text-sm font-medium">Results</span>
+</a>
+</nav>
+</div>
+<!-- User Profile Bottom -->
+<div class="flex items-center gap-3 px-3 py-3 mt-auto rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors border-t border-[#f0f2f4] dark:border-gray-800 pt-4">
+<div class="relative">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 border border-gray-200 dark:border-gray-700" data-alt="Profile picture of Mr. Thompson" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCbQCrooIVkTNpp0E1lrCxZOhl9AE6HWN2ncIKpfGdvxLSjCrHji_r4LI5IhNLtril8hGgKiJGkTV7k12cLxJ_Z1OSaReJjQg1muo1U87hDQI-bYIQ8TpUKcNk3vQ90ESEAysVL5e9Ndqk164xQNgTJCSYLGku7G8gaZURKsw39afM9M5qjWdjz4QOsQ6wPWxnoCdTbfv6iNNmbD3RJIsioJcA-t2OcGDDyqkOV28q4rAqWr_zM4MdrzPZBuCUk2xr-8WkB9pyNtMM");'></div>
+<div class="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full border-2 border-white dark:border-[#1a2632]"></div>
+</div>
+<div class="flex flex-col min-w-0">
+<p class="text-[#111418] dark:text-white text-sm font-semibold truncate">Mr. Thompson</p>
+<p class="text-[#617589] dark:text-gray-400 text-xs truncate">Head of English</p>
+</div>
+<span class="material-symbols-outlined ml-auto text-gray-400" style="font-size: 20px;">more_vert</span>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- Mobile Header -->
+<header class="lg:hidden flex items-center justify-between p-4 bg-white dark:bg-[#1a2632] border-b border-[#dbe0e6] dark:border-gray-800">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">school</span>
+<span class="font-bold">WriteSmart</span>
+</div>
+<button class="p-2 text-gray-600">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</header>
+<div class="flex-1 overflow-y-auto scrollbar-hide p-4 md:p-8 lg:p-10">
+<div class="mx-auto max-w-6xl flex flex-col gap-8">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="flex flex-col gap-2">
+<h2 class="text-[#111418] dark:text-white text-3xl md:text-4xl font-bold tracking-tight">Welcome back, Mr. Thompson</h2>
+<p class="text-[#617589] dark:text-gray-400 text-base">Here is what's happening with your writing classes today.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[#dbe0e6] dark:border-gray-700 bg-white dark:bg-[#1a2632] text-[#111418] dark:text-white text-sm font-bold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">add</span>
+<span>New Project</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-white text-sm font-bold hover:bg-blue-600 transition-colors shadow-sm shadow-blue-200 dark:shadow-none">
+<span class="material-symbols-outlined" style="font-size: 20px;">upload_file</span>
+<span>Upload Class CSV</span>
+</button>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="flex flex-col gap-1 p-5 rounded-2xl bg-white dark:bg-[#1a2632] border border-[#dbe0e6] dark:border-gray-800 shadow-sm">
+<div class="flex items-center gap-3 mb-2">
+<div class="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-primary">
+<span class="material-symbols-outlined">groups</span>
+</div>
+<p class="text-[#617589] dark:text-gray-400 text-sm font-medium">Total Students</p>
+</div>
+<p class="text-3xl font-bold text-[#111418] dark:text-white pl-1">142</p>
+</div>
+<div class="flex flex-col gap-1 p-5 rounded-2xl bg-white dark:bg-[#1a2632] border border-[#dbe0e6] dark:border-gray-800 shadow-sm">
+<div class="flex items-center gap-3 mb-2">
+<div class="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg text-purple-600">
+<span class="material-symbols-outlined">edit_document</span>
+</div>
+<p class="text-[#617589] dark:text-gray-400 text-sm font-medium">Active Projects</p>
+</div>
+<p class="text-3xl font-bold text-[#111418] dark:text-white pl-1">8</p>
+</div>
+<div class="flex flex-col gap-1 p-5 rounded-2xl bg-white dark:bg-[#1a2632] border border-[#dbe0e6] dark:border-gray-800 shadow-sm">
+<div class="flex items-center gap-3 mb-2">
+<div class="p-2 bg-orange-50 dark:bg-orange-900/20 rounded-lg text-orange-600">
+<span class="material-symbols-outlined">rate_review</span>
+</div>
+<p class="text-[#617589] dark:text-gray-400 text-sm font-medium">Pending Reviews</p>
+</div>
+<p class="text-3xl font-bold text-[#111418] dark:text-white pl-1">24</p>
+</div>
+<div class="flex flex-col gap-1 p-5 rounded-2xl bg-white dark:bg-[#1a2632] border border-[#dbe0e6] dark:border-gray-800 shadow-sm">
+<div class="flex items-center gap-3 mb-2">
+<div class="p-2 bg-green-50 dark:bg-green-900/20 rounded-lg text-green-600">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<p class="text-[#617589] dark:text-gray-400 text-sm font-medium">Completed</p>
+</div>
+<p class="text-3xl font-bold text-[#111418] dark:text-white pl-1">96%</p>
+</div>
+</div>
+<!-- Main Section: Active Projects -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h3 class="text-xl font-bold text-[#111418] dark:text-white">Active Projects</h3>
+<a class="text-primary text-sm font-semibold hover:underline" href="#">View all</a>
+</div>
+<div class="bg-white dark:bg-[#1a2632] rounded-2xl border border-[#dbe0e6] dark:border-gray-800 shadow-sm overflow-hidden">
+<!-- Project 1 -->
+<div class="p-6 border-b border-[#f0f2f4] dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+<div class="flex flex-col md:flex-row md:items-center gap-6">
+<!-- Icon -->
+<div class="hidden md:flex shrink-0 size-12 rounded-xl bg-blue-50 dark:bg-blue-900/20 items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-size: 28px;">menu_book</span>
+</div>
+<!-- Details -->
+<div class="flex-1 min-w-0">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
+<h4 class="text-lg font-bold text-[#111418] dark:text-white truncate">Year 5 Narrative Task</h4>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-bold w-fit">
+<span class="size-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                                                Writing
+                                            </span>
+</div>
+<div class="flex items-center gap-4 text-sm text-[#617589] dark:text-gray-400">
+<span>Due: Oct 24, 2023</span>
+<span class="text-gray-300 dark:text-gray-700">•</span>
+<span>Class 5B</span>
+</div>
+</div>
+<!-- Progress & Stats -->
+<div class="flex flex-col gap-2 min-w-[200px]">
+<div class="flex justify-between text-sm font-medium">
+<span class="text-[#111418] dark:text-white">Progress</span>
+<span class="text-primary">24/28 Submitted</span>
+</div>
+<div class="h-2 w-full bg-[#f0f2f4] dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-2 self-start md:self-center ml-auto md:ml-0">
+<button class="p-2 text-[#617589] hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Project 2 -->
+<div class="p-6 border-b border-[#f0f2f4] dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+<div class="flex flex-col md:flex-row md:items-center gap-6">
+<!-- Icon -->
+<div class="hidden md:flex shrink-0 size-12 rounded-xl bg-amber-50 dark:bg-amber-900/20 items-center justify-center text-amber-600">
+<span class="material-symbols-outlined" style="font-size: 28px;">history_edu</span>
+</div>
+<!-- Details -->
+<div class="flex-1 min-w-0">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
+<h4 class="text-lg font-bold text-[#111418] dark:text-white truncate">NAPLAN Practice Test 1</h4>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-xs font-bold w-fit">
+                                                Grading
+                                            </span>
+</div>
+<div class="flex items-center gap-4 text-sm text-[#617589] dark:text-gray-400">
+<span>Ended: Oct 20, 2023</span>
+<span class="text-gray-300 dark:text-gray-700">•</span>
+<span>All Year 5</span>
+</div>
+</div>
+<!-- Progress & Stats -->
+<div class="flex flex-col gap-2 min-w-[200px]">
+<div class="flex justify-between text-sm font-medium">
+<span class="text-[#111418] dark:text-white">Graded</span>
+<span class="text-amber-600">12/28 Complete</span>
+</div>
+<div class="h-2 w-full bg-[#f0f2f4] dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-amber-500 rounded-full" style="width: 42%"></div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-2 self-start md:self-center ml-auto md:ml-0">
+<button class="p-2 text-[#617589] hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Project 3 -->
+<div class="p-6 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+<div class="flex flex-col md:flex-row md:items-center gap-6">
+<!-- Icon -->
+<div class="hidden md:flex shrink-0 size-12 rounded-xl bg-gray-50 dark:bg-gray-700 items-center justify-center text-gray-500">
+<span class="material-symbols-outlined" style="font-size: 28px;">calendar_month</span>
+</div>
+<!-- Details -->
+<div class="flex-1 min-w-0">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2">
+<h4 class="text-lg font-bold text-[#111418] dark:text-white truncate">Weekly Spelling - Term 2</h4>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs font-bold w-fit">
+                                                Scheduled
+                                            </span>
+</div>
+<div class="flex items-center gap-4 text-sm text-[#617589] dark:text-gray-400">
+<span>Starts: Oct 26, 2023</span>
+<span class="text-gray-300 dark:text-gray-700">•</span>
+<span>Class 4A</span>
+</div>
+</div>
+<!-- Progress & Stats -->
+<div class="flex flex-col gap-2 min-w-[200px]">
+<div class="flex justify-between text-sm font-medium">
+<span class="text-[#617589] dark:text-gray-500">Starts in 2 days</span>
+<span class="text-[#617589] dark:text-gray-500">0/24</span>
+</div>
+<div class="h-2 w-full bg-[#f0f2f4] dark:bg-gray-700 rounded-full overflow-hidden">
+<div class="h-full bg-gray-300 dark:bg-gray-600 rounded-full" style="width: 0%"></div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-2 self-start md:self-center ml-auto md:ml-0">
+<button class="p-2 text-[#617589] hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Updates (Optional section for fullness) -->
+<div class="flex flex-col gap-4">
+<h3 class="text-xl font-bold text-[#111418] dark:text-white">Recent Activity</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="p-4 bg-white dark:bg-[#1a2632] rounded-xl border border-[#dbe0e6] dark:border-gray-800 flex gap-4 items-start">
+<div class="size-10 rounded-full bg-center bg-cover shrink-0" data-alt="Student avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDmGM0_sMCRnIVO1url17eqklsGQg2vOCX--gX-JOolCTA_EHRMvMqr3rC9b1IahjWueTlLgcomMyKjJfY8IkCpouKFG4bMLEJFFuoN4TRRh7Y3jT-ER2kkDdhOjk6gMSj4V-Li7QxSh9n9_tqxvOopNXVW3VWxpEFfOzb25YR4-Yg4rxxB9sIIomb5q0paNQvj8QH4MiGyz04mP50ycWjljS7kdHo-g-hz09VyU-aqCBLltncKCBam4CyNElDApsnVuh6E_mn6Y78')"></div>
+<div class="flex flex-col">
+<p class="text-sm text-[#111418] dark:text-white"><span class="font-bold">Sarah Jenkins</span> submitted <span class="font-medium text-primary">Narrative Task</span></p>
+<p class="text-xs text-[#617589] dark:text-gray-400 mt-1">2 minutes ago</p>
+</div>
+</div>
+<div class="p-4 bg-white dark:bg-[#1a2632] rounded-xl border border-[#dbe0e6] dark:border-gray-800 flex gap-4 items-start">
+<div class="size-10 rounded-full bg-center bg-cover shrink-0" data-alt="Student avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDPQ2LruiF5WV0ddwwCwS8ymFQZRCthm6oXQgmeP-wxMLW6Y-YTTPkYv2wpM4mlAUMaIMj-7yGrXFR2zRX_fwEM7SbygiaxE7zESuqKyS_L2Rfeiug9s59gxvG-N2tkoTXg3JDiHg4gjvEBfCZ-XUkrVTBeI5ZpgfVB8kiUGF_-lca0_PNdagLwjtxH-JcpoA5RHLi1AcGVJUmJ9qeWw2UX1Ek9iyTYjU8n_VNl1z5H6w9giTwFwGRwQkt_ZlFRB4wp4zv6ECahus8')"></div>
+<div class="flex flex-col">
+<p class="text-sm text-[#111418] dark:text-white"><span class="font-bold">Michael Chen</span> commented on <span class="font-medium text-primary">Spelling Project</span></p>
+<p class="text-xs text-[#617589] dark:text-gray-400 mt-1">15 minutes ago</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

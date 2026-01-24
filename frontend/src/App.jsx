@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import { ThemeProvider } from './contexts/ThemeContext';
 import LoginPage from './components/Login/LoginPage';
 import ProjectSelectionPage from './pages/Student/ProjectSelectionPage';
 import AssessmentPage from './pages/Student/AssessmentPage';
@@ -7,6 +8,7 @@ import TeacherProjectList from './pages/Teacher/TeacherProjectList';
 import ProjectBuilder from './pages/Teacher/ProjectBuilder';
 import Rostering from './pages/Teacher/Rostering';
 import TeacherDashboard from './pages/Teacher/Dashboard';
+import TeacherLayout from './components/Teacher/TeacherLayout';
 
 const AppContent = ({ isAuthenticated, handleLoginSuccess, handleLogout }) => {
   const router = createBrowserRouter([
@@ -36,23 +38,43 @@ const AppContent = ({ isAuthenticated, handleLoginSuccess, handleLogout }) => {
     },
     {
       path: "/teacher/projects",
-      element: <TeacherProjectList />,
+      element: (
+        <TeacherLayout>
+          <TeacherProjectList />
+        </TeacherLayout>
+      ),
     },
     {
       path: "/teacher/projects/new",
-      element: <ProjectBuilder />,
+      element: (
+        <TeacherLayout>
+          <ProjectBuilder />
+        </TeacherLayout>
+      ),
     },
     {
       path: "/teacher/projects/edit/:projectId",
-      element: <ProjectBuilder />,
+      element: (
+        <TeacherLayout>
+          <ProjectBuilder />
+        </TeacherLayout>
+      ),
     },
     {
       path: "/teacher/dashboard/:projectId",
-      element: <TeacherDashboard />,
+      element: (
+        <TeacherLayout>
+          <TeacherDashboard />
+        </TeacherLayout>
+      ),
     },
     {
       path: "/teacher/roster",
-      element: <Rostering />,
+      element: (
+        <TeacherLayout>
+          <Rostering />
+        </TeacherLayout>
+      ),
     },
     {
       path: "*",
@@ -77,11 +99,13 @@ function App() {
   };
 
   return (
-    <AppContent
-      isAuthenticated={isAuthenticated}
-      handleLoginSuccess={handleLoginSuccess}
-      handleLogout={handleLogout}
-    />
+    <ThemeProvider>
+      <AppContent
+        isAuthenticated={isAuthenticated}
+        handleLoginSuccess={handleLoginSuccess}
+        handleLogout={handleLogout}
+      />
+    </ThemeProvider>
   );
 }
 

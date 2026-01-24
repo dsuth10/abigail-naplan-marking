@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { studentApi } from '../../services/api';
+import ThemeToggle from '../../components/ThemeToggle';
 
 const ProjectSelectionPage = ({ onLogout }) => {
   const [projects, setProjects] = useState([]);
@@ -57,12 +58,15 @@ const ProjectSelectionPage = ({ onLogout }) => {
               <p className="text-gray-500">Class: {student?.class_group} | Year {student?.year_level}</p>
             </div>
           </div>
-          <button
-            onClick={handleLogout}
-            className="px-6 py-2 border border-gray-300 rounded-lg font-semibold text-gray-600 hover:bg-gray-50 transition-all"
-          >
-            Logout
-          </button>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <button
+              onClick={handleLogout}
+              className="px-6 py-2 border border-gray-300 rounded-lg font-semibold text-gray-600 hover:bg-gray-50 transition-all"
+            >
+              Logout
+            </button>
+          </div>
         </div>
 
         <h2 className="text-2xl font-bold text-gray-800 mb-8">Available Assessments</h2>
