@@ -3,8 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { studentApi } from '../../services/api';
 import SplitScreenLayout from '../../components/Editor/SplitScreenLayout';
 import Editor from '../../components/Editor/Editor';
-import ThemeToggle from '../../components/ThemeToggle';
 import { debounce } from 'lodash';
+
 
 const AssessmentPage = () => {
   const { projectId } = useParams();
@@ -44,7 +44,7 @@ const AssessmentPage = () => {
   // Timer countdown
   useEffect(() => {
     if (timeRemaining <= 0 || submission?.status === 'SUBMITTED') return;
-    
+
     const interval = setInterval(() => {
       setTimeRemaining((prev) => {
         if (prev <= 1) {
@@ -111,41 +111,40 @@ const AssessmentPage = () => {
   const isSubmitted = submission?.status === 'SUBMITTED';
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-background-light dark:bg-background-dark text-[#111418] dark:text-white font-display">
+    <div className="flex flex-col h-screen overflow-hidden bg-background text-slate-900 font-body">
       {/* Global Assessment Header */}
-      <header className="shrink-0 flex items-center justify-between border-b border-solid border-[#e5e7eb] dark:border-gray-800 bg-white dark:bg-[#1a2634] px-6 py-3 h-18 shadow-sm z-10">
+      <header className="shrink-0 flex items-center justify-between border-b border-border bg-white px-8 py-4 h-20 shadow-sm z-10">
         {/* Left: Student Info */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center size-10 rounded-full bg-primary/10 text-primary">
+          <div className="flex items-center justify-center size-12 rounded-full bg-primary/10 text-primary border-2 border-primary/5">
             <span className="material-symbols-outlined text-2xl">person</span>
           </div>
           <div>
-            <h2 className="text-sm font-medium text-slate-500 dark:text-slate-300 leading-tight font-body">Student</h2>
-            <p className="text-base font-bold leading-tight font-display">{student?.name || 'Student'}</p>
+            <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Student</h2>
+            <p className="text-lg font-display font-bold text-slate-900 leading-tight">{student?.name || 'Student'}</p>
           </div>
         </div>
-        
+
         {/* Center: Timer */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-          <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-gray-800 border border-slate-200 dark:border-gray-700">
-            <span className="material-symbols-outlined text-primary text-xl">timer</span>
-            <span className="text-xl font-bold tracking-tight font-mono text-slate-800 dark:text-slate-100">
+          <div className="flex items-center gap-2.5 px-6 py-2 rounded-2xl bg-slate-50 border-2 border-slate-100 shadow-sm">
+            <span className="material-symbols-outlined text-primary text-2xl">timer</span>
+            <span className="text-2xl font-bold tracking-tight font-mono text-slate-900">
               {formatTime(timeRemaining)}
             </span>
           </div>
         </div>
-        
+
         {/* Right: Actions & Stats */}
-        <div className="flex items-center gap-4">
-          <ThemeToggle />
-          <div className="flex flex-col items-end hidden sm:flex">
-            <span className="text-xs font-medium text-slate-400 dark:text-slate-300 uppercase tracking-wider font-body">Word Count</span>
-            <span className="text-base font-bold font-display">{wordCount}</span>
+        <div className="flex items-center gap-6">
+          <div className="flex flex-col items-end hidden lg:flex">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Word Count</span>
+            <span className="text-lg font-display font-bold text-slate-900 leading-tight">{wordCount}</span>
           </div>
           <button
             onClick={handleSubmit}
             disabled={isSubmitted}
-            className="flex items-center justify-center gap-2 h-10 px-6 cursor-pointer overflow-hidden rounded-lg bg-primary hover:bg-primary/90 transition-colors text-white text-sm font-bold leading-normal tracking-[0.015em] shadow-sm shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed font-display"
+            className="btn-primary"
           >
             <span>Finish Assessment</span>
             <span className="material-symbols-outlined text-[18px]">check_circle</span>

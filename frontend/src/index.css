@@ -1,96 +1,71 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @theme {
-  --color-primary: #137fec;
-  --color-background-light: #f6f7f8;
-  --color-background-dark: #101922;
-  --color-paper-light: #ffffff;
-  --color-paper-dark: #1a2634;
-  
-  --font-family-display: "Lexend", sans-serif;
-  --font-family-body: "Noto Sans", sans-serif;
-  
+  --color-primary: #0066FF;
+  --color-primary-hover: #0052CC;
+  --color-secondary: #FF9100;
+  --color-secondary-hover: #E68200;
+  --color-background: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-text: #0F172A;
+  --color-text-muted: #64748B;
+  --color-border: #E2E8F0;
+  --color-success: #00C853;
+  --color-error: #EF4444;
+
+  --font-display: "Lexend", sans-serif;
+  --font-inter: "Inter", system-ui, sans-serif;
+
+  --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
   --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
-:root {
-  --shadow-clay-outer: 8px 8px 16px 0 rgba(0, 0, 0, 0.08), 
-                       -8px -8px 16px 0 rgba(255, 255, 255, 0.8);
-  --shadow-clay-inner: inset 4px 4px 8px 0 rgba(255, 255, 255, 0.8), 
-                       inset -4px -4px 8px 0 rgba(0, 0, 0, 0.05);
-  
-  --shadow-clay-hover-outer: 12px 12px 24px 0 rgba(0, 0, 0, 0.1), 
-                             -12px -12px 24px 0 rgba(255, 255, 255, 0.9);
-  --shadow-clay-hover-inner: inset 6px 6px 12px 0 rgba(255, 255, 255, 1), 
-                             inset -6px -6px 12px 0 rgba(0, 0, 0, 0.08);
-
-  --shadow-clay-pressed: inset 2px 2px 4px 0 rgba(0, 0, 0, 0.1), 
-                         inset -2px -2px 4px 0 rgba(255, 255, 255, 0.5);
+@utility btn-primary {
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-xl bg-primary text-white font-bold transition-all hover:bg-primary-hover hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-primary/20;
 }
 
-@layer components {
-  .clay-card {
-    background: var(--color-background);
-    box-shadow: var(--shadow-clay-outer), var(--shadow-clay-inner);
-    border-radius: 24px;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
+@utility btn-secondary {
+  @apply inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white text-primary border-2 border-primary/10 font-bold transition-all hover:bg-slate-50 hover:-translate-y-0.5 active:translate-y-0;
+}
 
-  .clay-card:hover {
-    box-shadow: var(--shadow-clay-hover-outer), var(--shadow-clay-hover-inner);
-    transform: translateY(-4px);
-  }
+@utility card-premium {
+  @apply bg-white rounded-3xl p-8 border border-border shadow-md transition-all hover:shadow-xl hover:-translate-y-1;
+}
 
-  .clay-button {
-    background: white;
-    box-shadow: var(--shadow-clay-outer), var(--shadow-clay-inner);
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    transition: all 0.2s ease;
-  }
+@utility input-friendly {
+  @apply w-full px-6 py-4 rounded-xl bg-slate-50 border-2 border-transparent focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10 outline-none transition-all;
+}
 
-  .clay-button:hover {
-    box-shadow: var(--shadow-clay-hover-outer), var(--shadow-clay-hover-inner);
-    transform: translateY(-2px);
+@layer base {
+  body {
+    @apply bg-background text-text font-inter antialiased;
   }
+}
 
-  .clay-button:active {
-    box-shadow: var(--shadow-clay-pressed);
-    transform: translateY(0px) scale(0.98);
-  }
+/* Legacy Compat/Replacement */
+@utility clay-card {
+  @apply card-premium;
+}
 
-  .clay-button-cta {
-    background: var(--color-cta);
-    color: white;
-    box-shadow: 4px 4px 8px 0 rgba(249, 115, 22, 0.3), 
-                inset 2px 2px 4px 0 rgba(255, 255, 255, 0.4),
-                inset -2px -2px 4px 0 rgba(0, 0, 0, 0.1);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.2s ease;
-  }
+@utility clay-button {
+  @apply btn-secondary;
+}
 
-  .clay-button-cta:hover {
-    filter: brightness(1.1);
-    transform: translateY(-1px);
-    box-shadow: 6px 6px 12px 0 rgba(249, 115, 22, 0.4), 
-                inset 2px 2px 4px 0 rgba(255, 255, 255, 0.5);
-  }
+@utility clay-button-cta {
+  @apply btn-primary;
+}
 
-  .clay-button-cta:active {
-    transform: translateY(0px) scale(0.98);
-    box-shadow: inset 4px 4px 8px 0 rgba(0, 0, 0, 0.2);
-  }
+.font-varela {
+  font-family: var(--font-display);
+}
 
-  .font-varela {
-    font-family: 'Varela Round', sans-serif;
-  }
-
-  .font-nunito {
-    font-family: 'Nunito Sans', sans-serif;
-  }
+.font-nunito {
+  font-family: var(--font-inter);
 }

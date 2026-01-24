@@ -1,6 +1,4 @@
-import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import ThemeToggle from '../ThemeToggle';
 
 const TeacherSidebar = () => {
   const navigate = useNavigate();
@@ -22,16 +20,16 @@ const TeacherSidebar = () => {
   };
 
   return (
-    <aside className="hidden lg:flex w-72 flex-col justify-between bg-white dark:bg-[#1a2632] border-r border-[#dbe0e6] dark:border-gray-800 p-4 h-full shrink-0">
-      <div className="flex flex-col gap-6">
+    <aside className="hidden lg:flex w-80 flex-col justify-between bg-white border-r border-border p-6 h-full shrink-0 shadow-xl shadow-slate-200/50 z-20">
+      <div className="flex flex-col gap-10">
         {/* Brand */}
-        <div className="flex items-center gap-3 px-2">
-          <div className="bg-primary/10 flex items-center justify-center rounded-xl size-10">
-            <span className="material-symbols-outlined text-primary" style={{ fontSize: '24px' }}>school</span>
+        <div className="flex items-center gap-4 px-2">
+          <div className="bg-primary/10 flex items-center justify-center rounded-2xl size-12 shadow-sm border border-primary/5">
+            <span className="material-symbols-outlined text-primary" style={{ fontSize: '28px' }}>school</span>
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-[#111418] dark:text-white font-display">WriteSmart</h1>
+          <h1 className="text-2xl font-display font-black tracking-tight text-slate-900">WriteSmart</h1>
         </div>
-        
+
         {/* Navigation */}
         <nav className="flex flex-col gap-1">
           {navItems.map((item) => {
@@ -40,11 +38,10 @@ const TeacherSidebar = () => {
               <button
                 key={item.path}
                 onClick={() => item.path !== '#' && navigate(item.path)}
-                className={`flex items-center gap-3 px-3 py-3 rounded-xl transition-colors ${
-                  active
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-[#617589] dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-[#111418] dark:hover:text-white'
-                }`}
+                className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all ${active
+                    ? 'bg-primary text-white shadow-lg shadow-primary/20 scale-105'
+                    : 'text-slate-400 hover:bg-slate-50 hover:text-slate-900 active:scale-95'
+                  }`}
               >
                 <span
                   className="material-symbols-outlined"
@@ -52,29 +49,25 @@ const TeacherSidebar = () => {
                 >
                   {item.icon}
                 </span>
-                <span className={`text-sm ${active ? 'font-semibold' : 'font-medium'}`}>{item.label}</span>
+                <span className={`text-base font-bold tracking-tight ${active ? 'text-white' : ''}`}>{item.label}</span>
               </button>
             );
           })}
         </nav>
-        
-        {/* Theme Toggle */}
-        <div className="px-2">
-          <ThemeToggle />
-        </div>
+
       </div>
-      
+
       {/* User Profile Bottom */}
-      <div className="flex items-center gap-3 px-3 py-3 mt-auto rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer transition-colors border-t border-[#f0f2f4] dark:border-gray-800 pt-4">
+      <div className="flex items-center gap-4 px-4 py-4 mt-auto rounded-3xl bg-slate-50 border border-slate-100 cursor-pointer hover:bg-slate-100 transition-all group">
         <div className="relative">
-          <div className="bg-center bg-no-repeat bg-cover rounded-full size-10 border border-gray-200 dark:border-gray-700 bg-gray-200"></div>
-          <div className="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full border-2 border-white dark:border-[#1a2632]"></div>
+          <div className="bg-primary/10 rounded-2xl size-12 flex items-center justify-center text-primary font-bold text-lg border-2 border-white shadow-sm group-hover:scale-105 transition-transform">T</div>
+          <div className="absolute -bottom-1 -right-1 size-4 bg-success rounded-full border-2 border-white"></div>
         </div>
         <div className="flex flex-col min-w-0">
-          <p className="text-[#111418] dark:text-white text-sm font-semibold truncate">Teacher</p>
-          <p className="text-[#617589] dark:text-gray-400 text-xs truncate">Account</p>
+          <p className="text-slate-900 text-sm font-bold truncate">Staff Member</p>
+          <p className="text-slate-400 text-xs font-bold uppercase tracking-widest truncate">Teacher</p>
         </div>
-        <span className="material-symbols-outlined ml-auto text-gray-400 dark:text-gray-300" style={{ fontSize: '20px' }}>more_vert</span>
+        <span className="material-symbols-outlined ml-auto text-slate-300 group-hover:text-slate-500 transition-colors" style={{ fontSize: '20px' }}>settings</span>
       </div>
     </aside>
   );

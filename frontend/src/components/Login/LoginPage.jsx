@@ -37,14 +37,14 @@ const LoginPage = ({ onLoginSuccess }) => {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--color-background)] py-12 px-4 sm:px-6 lg:px-8 font-nunito">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-background py-16 px-6 lg:px-12 font-body">
+      <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-varela font-bold text-[var(--color-text)] mb-6 tracking-tight">
-            Abigail Spelling Assessment
+          <h1 className="text-6xl font-display font-bold text-slate-900 mb-6 tracking-tight">
+            Abigail Spelling
           </h1>
-          <p className="text-xl text-indigo-900/60 max-w-2xl mx-auto leading-relaxed">
-            Welcome! Please find your name and avatar below to start your spelling adventure.
+          <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed font-medium">
+            Welcome back! Select your avatar to start your assessment.
           </p>
         </div>
 
