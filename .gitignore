@@ -67,6 +67,8 @@ backend/static/
 static/stimulus_assets/
 *.exe
 *.spec
+roster.csv
+export.zip
 
 # PyInstaller
 *.spec
