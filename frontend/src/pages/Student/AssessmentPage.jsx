@@ -85,7 +85,7 @@ const AssessmentPage = () => {
       {/* Header */}
       <header className="bg-white shadow-sm px-6 py-4 flex justify-between items-center z-10">
         <div className="flex items-center gap-4">
-          <button 
+          <button
             onClick={() => navigate('/projects')}
             className="text-gray-500 hover:text-gray-700 font-medium flex items-center gap-2"
           >
@@ -96,9 +96,8 @@ const AssessmentPage = () => {
           </button>
           <div className="h-6 w-px bg-gray-200"></div>
           <h1 className="text-xl font-bold text-gray-800">{project.title}</h1>
-          <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
-            project.genre === 'NARRATIVE' ? 'bg-purple-100 text-purple-700' : 'bg-orange-100 text-orange-700'
-          }`}>
+          <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${project.genre === 'NARRATIVE' ? 'bg-purple-100 text-purple-700' : 'bg-orange-100 text-orange-700'
+            }`}>
             {project.genre}
           </span>
         </div>
@@ -126,9 +125,9 @@ const AssessmentPage = () => {
       {/* Main Content */}
       <main className="flex-1 overflow-hidden">
         <SplitScreenLayout stimulus={project}>
-          <Editor 
-            value={content} 
-            onChange={handleContentChange} 
+          <Editor
+            value={content}
+            onChange={handleContentChange}
             disabled={isSubmitted}
           />
         </SplitScreenLayout>

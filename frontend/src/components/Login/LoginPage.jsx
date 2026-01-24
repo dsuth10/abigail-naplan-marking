@@ -37,29 +37,31 @@ const LoginPage = ({ onLoginSuccess }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[var(--color-background)] py-12 px-4 sm:px-6 lg:px-8 font-nunito">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-extrabold text-gray-900 mb-4">
+        <div className="text-center mb-16">
+          <h1 className="text-5xl font-varela font-bold text-[var(--color-text)] mb-6 tracking-tight">
             Abigail Spelling Assessment
           </h1>
-          <p className="text-xl text-gray-600">
-            Welcome! Please find your name and avatar to log in.
+          <p className="text-xl text-indigo-900/60 max-w-2xl mx-auto leading-relaxed">
+            Welcome! Please find your name and avatar below to start your spelling adventure.
           </p>
         </div>
 
-        {selectedStudent ? (
-          <LoginForm
-            student={selectedStudent}
-            onLogin={handleLogin}
-            onBack={() => setSelectedStudent(null)}
-          />
-        ) : (
-          <AvatarGrid
-            students={students}
-            onSelect={(student) => setSelectedStudent(student)}
-          />
-        )}
+        <div className="flex justify-center">
+          {selectedStudent ? (
+            <LoginForm
+              student={selectedStudent}
+              onLogin={handleLogin}
+              onBack={() => setSelectedStudent(null)}
+            />
+          ) : (
+            <AvatarGrid
+              students={students}
+              onSelect={(student) => setSelectedStudent(student)}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

@@ -1,3 +1,88 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --color-primary: #4f46e5;
+  --color-secondary: #818cf8;
+  --color-cta: #f97316;
+  --color-background: #eef2ff;
+  --color-text: #1e1b4b;
+  
+  --shadow-clay-outer: 8px 8px 16px 0 rgba(0, 0, 0, 0.08), 
+                       -8px -8px 16px 0 rgba(255, 255, 255, 0.8);
+  --shadow-clay-inner: inset 4px 4px 8px 0 rgba(255, 255, 255, 0.8), 
+                       inset -4px -4px 8px 0 rgba(0, 0, 0, 0.05);
+  
+  --shadow-clay-hover-outer: 12px 12px 24px 0 rgba(0, 0, 0, 0.1), 
+                             -12px -12px 24px 0 rgba(255, 255, 255, 0.9);
+  --shadow-clay-hover-inner: inset 6px 6px 12px 0 rgba(255, 255, 255, 1), 
+                             inset -6px -6px 12px 0 rgba(0, 0, 0, 0.08);
+
+  --shadow-clay-pressed: inset 2px 2px 4px 0 rgba(0, 0, 0, 0.1), 
+                         inset -2px -2px 4px 0 rgba(255, 255, 255, 0.5);
+}
+
+@layer components {
+  .clay-card {
+    background: var(--color-background);
+    box-shadow: var(--shadow-clay-outer), var(--shadow-clay-inner);
+    border-radius: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .clay-card:hover {
+    box-shadow: var(--shadow-clay-hover-outer), var(--shadow-clay-hover-inner);
+    transform: translateY(-4px);
+  }
+
+  .clay-button {
+    background: white;
+    box-shadow: var(--shadow-clay-outer), var(--shadow-clay-inner);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    transition: all 0.2s ease;
+  }
+
+  .clay-button:hover {
+    box-shadow: var(--shadow-clay-hover-outer), var(--shadow-clay-hover-inner);
+    transform: translateY(-2px);
+  }
+
+  .clay-button:active {
+    box-shadow: var(--shadow-clay-pressed);
+    transform: translateY(0px) scale(0.98);
+  }
+
+  .clay-button-cta {
+    background: var(--color-cta);
+    color: white;
+    box-shadow: 4px 4px 8px 0 rgba(249, 115, 22, 0.3), 
+                inset 2px 2px 4px 0 rgba(255, 255, 255, 0.4),
+                inset -2px -2px 4px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+  }
+
+  .clay-button-cta:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 6px 6px 12px 0 rgba(249, 115, 22, 0.4), 
+                inset 2px 2px 4px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  .clay-button-cta:active {
+    transform: translateY(0px) scale(0.98);
+    box-shadow: inset 4px 4px 8px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .font-varela {
+    font-family: 'Varela Round', sans-serif;
+  }
+
+  .font-nunito {
+    font-family: 'Nunito Sans', sans-serif;
+  }
+}
