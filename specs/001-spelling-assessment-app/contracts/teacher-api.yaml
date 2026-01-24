@@ -1,0 +1,25 @@
+openapi: 3.0.0
+info:
+  title: Teacher API - Local Spelling Assessment App
+  version: 1.0.0
+paths:
+  /roster/upload:
+    post:
+      summary: Upload student CSV
+  /projects:
+    get:
+      summary: List all projects
+    post:
+      summary: Create new project
+  /dashboard/monitor:
+    get:
+      summary: Get current status of all students in session
+  /submissions/{id}/unlock:
+    post:
+      summary: Return a submission to draft mode
+  /submissions/export:
+    get:
+      summary: Export submissions as raw text files
+  /ws/dashboard:
+    get:
+      summary: WebSocket for live monitoring updates

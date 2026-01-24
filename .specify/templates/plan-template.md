@@ -31,7 +31,11 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] **Local-First**: Does this feature require external API calls or internet access? (Must be NO)
+- [ ] **No-SpellCheck**: If this involves an editor, is browser spellcheck/autocorrect disabled?
+- [ ] **Offline Reliability**: Are all new assets served locally (no CDNs)?
+- [ ] **Privacy**: Does this implement keystroke monitoring? (Must be NO)
+- [ ] **Data Integrity**: Does this preserve raw submission text?
 
 ## Project Structure
 
