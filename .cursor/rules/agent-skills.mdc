@@ -1,0 +1,31 @@
+---
+description: Proactively identifies and utilizes specialized Agent Skills from the .agent/skills directory to enhance task execution through progressive disclosure.
+globs: 
+alwaysApply: true
+---
+
+# Agent Skills Activation Rule
+
+Before starting any task, the agent must check for relevant specialized skills in the `.agent/skills/` directory. This ensures that project-specific knowledge and automated workflows are utilized effectively without overwhelming the context window.
+
+## Workflow
+
+1.  **Scan Skills**: At the beginning of a task, list the directories in `.agent/skills/` to identify potential matches based on folder names.
+2.  **Progressive Disclosure**:
+    *   For promising candidates, read **only the frontmatter description** in the `SKILL.md` file.
+    *   DO NOT read the entire skill file unless it is directly relevant to the current task.
+3.  **Activation**:
+    *   If a skill is highly relevant, explicitly state that you are using it (e.g., "Activating the `narrative-marking-naplan` skill").
+    *   If a skill might be useful but isn't strictly required, suggest its use to the user.
+4.  **Application**: Once a skill is selected, follow its specific instructions, scripts, and reference documents located within its folder.
+
+## Key Skill Areas to Watch For
+
+*   **NAPLAN Marking**: `narrative-marking-naplan`, `persuasive-marking-naplan`.
+*   **Design & UI**: `ui-ux-pro-max`, `frontend-design`, `tailwind-patterns`.
+*   **Architecture & Data**: `database-design`, `architecture`, `api-patterns`.
+*   **File Handling**: `docx`, `xlsx`, `pptx`, `pdf`.
+*   **Workflow Automation**: `skill-creator`, `tdd-workflow`, `lint-and-validate`.
+
+## Robust Coding Practice Recommendation
+Always prefer using an existing skill over implementing logic from scratch if a relevant skill exists. This ensures consistency with the project's established standards and specialized assessment rubrics.

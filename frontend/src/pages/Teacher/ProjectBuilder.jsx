@@ -4,6 +4,7 @@ import { teacherApi, rosterApi } from '../../services/api';
 import { Check, X, ChevronDown, Eye, Edit2 } from 'lucide-react';
 import SplitScreenLayout from '../../components/Editor/SplitScreenLayout';
 import Editor from '../../components/Editor/Editor';
+import RichTextEditor from '../../components/Editor/RichTextEditor';
 
 const ProjectBuilder = () => {
   const { projectId } = useParams();
@@ -76,8 +77,7 @@ const ProjectBuilder = () => {
     });
   };
 
-  const handleAssetUpload = async (e) => {
-    const file = e.target.files[0];
+  const handleAssetUpload = async (file) => {
     if (!file) return;
 
     const uploadFormData = new FormData();
@@ -85,14 +85,11 @@ const ProjectBuilder = () => {
 
     try {
       const response = await teacherApi.uploadAsset(uploadFormData);
-      const imgTag = `<img src="${response.data.path}" alt="Stimulus" class="max-w-full h-auto rounded-lg shadow-md my-4" />`;
-      setFormData(prev => ({
-        ...prev,
-        stimulus_html: prev.stimulus_html + imgTag
-      }));
+      return response.data.path;
     } catch (err) {
       console.error('Error uploading asset:', err);
       alert('Failed to upload image.');
+      return null;
     }
   };
 
@@ -322,34 +319,23 @@ const ProjectBuilder = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Instructions (Markdown or Text)</label>
-              <textarea
-                name="instructions"
+              <label className="block text-sm font-medium text-gray-700 mb-2">Instructions</label>
+              <RichTextEditor
                 value={formData.instructions}
-                onChange={handleInputChange}
-                rows="4"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                onChange={(html) => setFormData(prev => ({ ...prev, instructions: html }))}
                 placeholder="Provide instructions for the students..."
-                required
               />
             </div>
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="block text-sm font-medium text-gray-700">Stimulus Content (HTML)</label>
-                <label className="cursor-pointer bg-blue-50 text-blue-600 px-3 py-1 rounded-lg text-sm font-semibold hover:bg-blue-100 transition-colors">
-                  Upload Stimulus Image
-                  <input type="file" onChange={handleAssetUpload} className="hidden" accept="image/*" />
-                </label>
+                <label className="block text-sm font-medium text-gray-700">Stimulus Content</label>
               </div>
-              <textarea
-                name="stimulus_html"
+              <RichTextEditor
                 value={formData.stimulus_html}
-                onChange={handleInputChange}
-                rows="8"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg font-mono text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-                placeholder="<p>Enter the stimulus text or upload images above...</p>"
-                required
+                onChange={(html) => setFormData(prev => ({ ...prev, stimulus_html: html }))}
+                placeholder="Enter the stimulus text or upload images using the toolbar..."
+                onImageUpload={handleAssetUpload}
               />
             </div>
 

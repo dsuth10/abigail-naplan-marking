@@ -38,23 +38,32 @@ const SplitScreenLayout = ({ stimulus, children }) => {
                 <span className="material-symbols-outlined text-primary text-2xl">lightbulb</span>
                 Task Instructions
               </h3>
-              <p className="text-slate-500 leading-relaxed mb-6 font-body font-medium">
-                Read the prompt carefully and plan your response.
-              </p>
-              <ul className="space-y-4 list-none pl-0 text-slate-600 font-body font-medium">
-                <li className="flex gap-4 items-start">
-                  <span className="mt-2 size-2 rounded-full bg-primary shrink-0 shadow-sm shadow-primary/40"></span>
-                  <span>Write your response in the editor on the right.</span>
-                </li>
-                <li className="flex gap-4 items-start">
-                  <span className="mt-2 size-2 rounded-full bg-primary shrink-0 shadow-sm shadow-primary/40"></span>
-                  <span>Think about your ideas, structure, and language choices.</span>
-                </li>
-                <li className="flex gap-4 items-start">
-                  <span className="mt-2 size-2 rounded-full bg-primary shrink-0 shadow-sm shadow-primary/40"></span>
-                  <span>Remember to check your spelling and punctuation carefully.</span>
-                </li>
-              </ul>
+              {stimulus?.instructions ? (
+                <div
+                  className="prose prose-slate prose-sm max-w-none text-slate-600 font-body leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: stimulus.instructions }}
+                />
+              ) : (
+                <>
+                  <p className="text-slate-500 leading-relaxed mb-6 font-body font-medium">
+                    Read the prompt carefully and plan your response.
+                  </p>
+                  <ul className="space-y-4 list-none pl-0 text-slate-600 font-body font-medium">
+                    <li className="flex gap-4 items-start">
+                      <span className="mt-2 size-2 rounded-full bg-primary shrink-0 shadow-sm shadow-primary/40"></span>
+                      <span>Write your response in the editor on the right.</span>
+                    </li>
+                    <li className="flex gap-4 items-start">
+                      <span className="mt-2 size-2 rounded-full bg-primary shrink-0 shadow-sm shadow-primary/40"></span>
+                      <span>Think about your ideas, structure, and language choices.</span>
+                    </li>
+                    <li className="flex gap-4 items-start">
+                      <span className="mt-2 size-2 rounded-full bg-primary shrink-0 shadow-sm shadow-primary/40"></span>
+                      <span>Remember to check your spelling and punctuation carefully.</span>
+                    </li>
+                  </ul>
+                </>
+              )}
             </div>
           </div>
         </div>
