@@ -38,7 +38,8 @@ export const teacherApi = {
 
 export const rosterApi = {
   uploadRoster: (formData) => api.post('/roster/upload', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' }
+    headers: { 'Content-Type': 'multipart/form-data' },
+    timeout: 60000
   }),
   getClassGroups: () => api.get('/roster/class-groups'),
 };

@@ -68,7 +68,8 @@ class RosterService:
                     results["created"] += 1
                 
                 # Commit periodically or at the end
-                if results["created"] + results["updated"] % 50 == 0:
+                if (results["created"] + results["updated"]) % 50 == 0:
+                    print(f"Processed {results['total']} rows... (Committing)")
                     db.commit()
 
             except Exception as e:

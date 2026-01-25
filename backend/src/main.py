@@ -31,11 +31,11 @@ app.include_router(roster.router, prefix="/api/roster", tags=["Roster"])
 app.include_router(submissions.router, prefix="/api/submissions", tags=["Submissions"])
 app.include_router(ws.router, prefix="/api/ws", tags=["WebSocket"])
 
+@app.get("/api/health")
+async def health_check():
+    return {"status": "healthy"}
+
 # Serve static files (built React app and local assets)
 # Note: Ensure these directories exist or handle gracefully
 if os.path.exists("static"):
     app.mount("/", StaticFiles(directory="static", html=True), name="static")
-
-@app.get("/api/health")
-async def health_check():
-    return {"status": "healthy"}

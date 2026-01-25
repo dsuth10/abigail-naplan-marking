@@ -26,7 +26,7 @@ async def export_submissions(project_id: UUID, db: Session = Depends(get_db)):
         headers={"Content-Disposition": f"attachment; filename={filename}"}
     )
 
-@router.get("/", response_model=List[SubmissionResponse])
+@router.get("", response_model=List[SubmissionResponse])
 async def list_submissions(db: Session = Depends(get_db)):
     """List all submissions for the teacher dashboard."""
     return SubmissionService.get_all_submissions(db)

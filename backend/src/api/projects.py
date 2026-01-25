@@ -16,12 +16,12 @@ UPLOAD_DIR = "static/stimulus_assets"
 if not os.path.exists(UPLOAD_DIR):
     os.makedirs(UPLOAD_DIR)
 
-@router.get("/", response_model=List[ProjectResponse])
+@router.get("", response_model=List[ProjectResponse])
 async def list_projects(db: Session = Depends(get_db)):
     """List all projects for the teacher."""
     return ProjectService.list_projects(db)
 
-@router.post("/", response_model=ProjectResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=ProjectResponse, status_code=status.HTTP_201_CREATED)
 async def create_project(project_data: ProjectCreate, db: Session = Depends(get_db)):
     """Create a new assessment project."""
     return ProjectService.create_project(db, project_data)

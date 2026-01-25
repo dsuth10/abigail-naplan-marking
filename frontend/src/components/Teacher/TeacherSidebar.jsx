@@ -36,11 +36,11 @@ const TeacherSidebar = () => {
             const active = isActive(item.path);
             return (
               <button
-                key={item.path}
+                key={item.label}
                 onClick={() => item.path !== '#' && navigate(item.path)}
                 className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all ${active
-                    ? 'bg-primary text-white shadow-lg shadow-primary/20 scale-105'
-                    : 'text-slate-400 hover:bg-slate-50 hover:text-slate-900 active:scale-95'
+                  ? 'bg-primary text-white shadow-lg shadow-primary/20 scale-105'
+                  : 'text-slate-400 hover:bg-slate-50 hover:text-slate-900 active:scale-95'
                   }`}
               >
                 <span
