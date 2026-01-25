@@ -85,7 +85,12 @@ async def update_draft(
          raise HTTPException(status_code=400, detail="content_raw is required")
          
     submission = SubmissionService.create_or_update_draft(
-        db, current_student.id, project_id, submission_data.content_raw
+        db, 
+        current_student.id, 
+        project_id, 
+        submission_data.content_raw,
+        submission_data.content_html or "",
+        submission_data.content_json or {}
     )
 
     # Broadcast update via WebSocket

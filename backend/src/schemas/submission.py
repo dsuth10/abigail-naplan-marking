@@ -6,6 +6,8 @@ from typing import Optional
 class SubmissionBase(BaseModel):
     project_id: UUID
     content_raw: str = ""
+    content_html: str = ""
+    content_json: dict = {}
     status: str = "DRAFT"
 
 class SubmissionCreate(SubmissionBase):
@@ -13,6 +15,8 @@ class SubmissionCreate(SubmissionBase):
 
 class SubmissionUpdate(BaseModel):
     content_raw: Optional[str] = None
+    content_html: Optional[str] = None
+    content_json: Optional[dict] = None
     status: Optional[str] = None
 
 class SubmissionResponse(SubmissionBase):

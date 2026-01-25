@@ -21,7 +21,7 @@ export const studentApi = {
   getProjects: () => api.get('/student/projects'),
   getProject: (id) => api.get(`/student/projects/${id}`),
   getSubmission: (projectId) => api.get(`/student/submissions/${projectId}`),
-  updateDraft: (projectId, content) => api.post(`/student/submissions/${projectId}`, { content_raw: content }),
+  updateDraft: (projectId, contentData) => api.post(`/student/submissions/${projectId}`, contentData),
   submitProject: (projectId) => api.put(`/student/submissions/${projectId}/submit`),
 };
 
@@ -40,6 +40,7 @@ export const rosterApi = {
   uploadRoster: (formData) => api.post('/roster/upload', formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   }),
+  getClassGroups: () => api.get('/roster/class-groups'),
 };
 
 export const submissionApi = {

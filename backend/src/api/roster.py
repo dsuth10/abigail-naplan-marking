@@ -1,9 +1,15 @@
 from fastapi import APIRouter, Depends, UploadFile, File, HTTPException
 from sqlalchemy.orm import Session
+from typing import List
 from src.database import get_db
 from src.services.roster_service import RosterService
 
 router = APIRouter()
+
+@router.get("/class-groups", response_model=List[str])
+async def get_class_groups(db: Session = Depends(get_db)):
+    """Get unique class groups from the roster."""
+    return RosterService.get_class_groups(db)
 
 @router.post("/upload")
 async def upload_roster(

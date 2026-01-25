@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { teacherApi } from '../../services/api';
+import { teacherApi, rosterApi } from '../../services/api';
+import { Check, X, ChevronDown } from 'lucide-react';
+import { useRef } from 'react';
 
 const ProjectBuilder = () => {
   const { projectId } = useParams();
@@ -10,41 +12,66 @@ const ProjectBuilder = () => {
     genre: 'NARRATIVE',
     instructions: '',
     stimulus_html: '',
-    assigned_class_groups: '',
+    assigned_class_groups: [],
     is_active: true
   });
+  const [availableClassGroups, setAvailableClassGroups] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [fetching, setFetching] = useState(!!projectId);
+  const [fetching, setFetching] = useState(true);
   const [error, setError] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
-    if (projectId) {
-      const fetchProject = async () => {
-        try {
-          const response = await teacherApi.getProject(projectId);
-          const project = response.data;
+    const fetchData = async () => {
+      try {
+        const classGroupsRes = await rosterApi.getClassGroups();
+        setAvailableClassGroups(classGroupsRes.data);
+
+        if (projectId) {
+          const projectRes = await teacherApi.getProject(projectId);
+          const project = projectRes.data;
           setFormData({
             title: project.title,
             genre: project.genre,
             instructions: project.instructions,
             stimulus_html: project.stimulus_html,
-            assigned_class_groups: project.assigned_class_groups.join(', '),
+            assigned_class_groups: project.assigned_class_groups,
             is_active: project.is_active
           });
-        } catch (err) {
-          console.error('Error fetching project:', err);
-          setError('Failed to load project details.');
-        } finally {
-          setFetching(false);
         }
-      };
-      fetchProject();
-    }
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        setError('Failed to load necessary details.');
+      } finally {
+        setFetching(false);
+      }
+    };
+    fetchData();
   }, [projectId]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const toggleClassGroup = (group) => {
+    setFormData(prev => {
+      const groups = prev.assigned_class_groups.includes(group)
+        ? prev.assigned_class_groups.filter(g => g !== group)
+        : [...prev.assigned_class_groups, group];
+      return { ...prev, assigned_class_groups: groups };
+    });
   };
 
   const handleAssetUpload = async (e) => {
@@ -69,19 +96,19 @@ const ProjectBuilder = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.assigned_class_groups.length === 0) {
+      setError('Please select at least one class group.');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
-    const payload = {
-      ...formData,
-      assigned_class_groups: formData.assigned_class_groups.split(',').map(s => s.trim()).filter(s => s !== '')
-    };
-
     try {
       if (projectId) {
-        await teacherApi.updateProject(projectId, payload);
+        await teacherApi.updateProject(projectId, formData);
       } else {
-        await teacherApi.createProject(payload);
+        await teacherApi.createProject(formData);
       }
       navigate('/teacher/projects');
     } catch (err) {
@@ -144,16 +171,85 @@ const ProjectBuilder = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Assigned Class Groups (comma separated)</label>
-            <input
-              type="text"
-              name="assigned_class_groups"
-              value={formData.assigned_class_groups}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-              placeholder="e.g. 5A, 5B, 6C"
-              required
-            />
+            <label className="block text-sm font-medium text-gray-700 mb-2">Assign to Class Groups</label>
+            {availableClassGroups.length > 0 ? (
+              <div className="relative" ref={dropdownRef}>
+                {/* Custom Multi-select Dropdown */}
+                <div
+                  className="min-h-[42px] w-full px-2 py-1.5 border border-gray-300 rounded-lg focus-within:ring-2 focus-within:ring-blue-500 bg-white cursor-pointer flex flex-wrap gap-2 items-center transition-all"
+                  onClick={() => !loading && setIsDropdownOpen(!isDropdownOpen)}
+                >
+                  {formData.assigned_class_groups.length > 0 ? (
+                    formData.assigned_class_groups.map(group => (
+                      <span
+                        key={group}
+                        className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-md text-sm font-bold flex items-center gap-1"
+                      >
+                        {group}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleClassGroup(group);
+                          }}
+                          className="hover:text-blue-900"
+                        >
+                          <X size={14} />
+                        </button>
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-gray-400 px-2 text-sm italic">Select class groups...</span>
+                  )}
+                  <div className="flex-grow"></div>
+                  <ChevronDown size={18} className={`text-gray-400 mr-2 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                </div>
+
+                {/* Dropdown Menu */}
+                {isDropdownOpen && (
+                  <div
+                    className="absolute z-50 top-full left-0 w-full mt-2 bg-white border border-gray-200 rounded-xl shadow-2xl overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200"
+                    style={{ maxHeight: '240px' }}
+                  >
+                    <div className="p-2 border-b border-gray-100 sticky top-0 bg-white">
+                      <input
+                        type="text"
+                        placeholder="Filter groups..."
+                        className="w-full px-3 py-1.5 text-sm border-none focus:ring-0 outline-none"
+                        autoFocus
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={(e) => {
+                          const items = document.querySelectorAll('.dropdown-item');
+                          const term = e.target.value.toLowerCase();
+                          items.forEach(item => {
+                            const text = item.textContent.toLowerCase();
+                            item.classList.toggle('hidden', !text.includes(term));
+                          });
+                        }}
+                      />
+                    </div>
+                    {availableClassGroups.map(group => (
+                      <div
+                        key={group}
+                        className={`dropdown-item flex items-center justify-between px-4 py-3 hover:bg-blue-50 cursor-pointer transition-colors ${formData.assigned_class_groups.includes(group) ? 'bg-blue-50 text-blue-700 font-bold' : 'text-gray-700'
+                          }`}
+                        onClick={() => toggleClassGroup(group)}
+                      >
+                        <span>{group}</span>
+                        {formData.assigned_class_groups.includes(group) && <Check size={16} />}
+                      </div>
+                    ))}
+                    {availableClassGroups.length === 0 && (
+                      <div className="px-4 py-3 text-sm text-gray-500 italic">No groups found</div>
+                    )}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="p-4 bg-orange-50 border border-orange-200 rounded-xl text-orange-700 text-sm">
+                No class groups found in the roster. Please upload a roster first.
+              </div>
+            )}
           </div>
 
           <div>
@@ -193,7 +289,7 @@ const ProjectBuilder = () => {
           <div className="flex justify-end pt-6">
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || availableClassGroups.length === 0}
               className="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition-all shadow-md disabled:opacity-50"
             >
               {loading ? 'Saving...' : (projectId ? 'Save Changes' : 'Create Project')}

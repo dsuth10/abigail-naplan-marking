@@ -16,19 +16,30 @@ class SubmissionService:
         return db.execute(stmt).scalar_one_or_none()
 
     @staticmethod
-    def create_or_update_draft(db: Session, student_id: UUID, project_id: UUID, content: str) -> Submission:
+    def create_or_update_draft(
+        db: Session, 
+        student_id: UUID, 
+        project_id: UUID, 
+        content_raw: str,
+        content_html: str = "",
+        content_json: dict = {}
+    ) -> Submission:
         submission = SubmissionService.get_submission(db, student_id, project_id)
         
         if submission:
             if submission.status == "SUBMITTED":
                 return submission  # Or raise error if locked
-            submission.content_raw = content
+            submission.content_raw = content_raw
+            submission.content_html = content_html
+            submission.content_json = content_json
             submission.last_updated_at = datetime.now(timezone.utc)
         else:
             submission = Submission(
                 student_id=student_id,
                 project_id=project_id,
-                content_raw=content,
+                content_raw=content_raw,
+                content_html=content_html,
+                content_json=content_json,
                 status="DRAFT"
             )
             db.add(submission)

@@ -76,3 +76,9 @@ class RosterService:
 
         db.commit()
         return results
+
+    @staticmethod
+    def get_class_groups(db: Session) -> List[str]:
+        """Get a unique list of all class groups from the student roster."""
+        result = db.execute(select(Student.class_group).distinct()).scalars().all()
+        return sorted([r for r in result if r])

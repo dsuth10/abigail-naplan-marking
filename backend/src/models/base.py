@@ -57,6 +57,8 @@ class Submission(Base):
     student_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("students.id"), nullable=False)
     project_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("projects.id"), nullable=False)
     content_raw: Mapped[str] = mapped_column(Text, default="")
+    content_html: Mapped[str] = mapped_column(Text, default="")
+    content_json: Mapped[dict] = mapped_column(JSON, default=dict)
     status: Mapped[str] = mapped_column(String, default="DRAFT")  # DRAFT, SUBMITTED
     submitted_at: Mapped[Optional[datetime]] = mapped_column(DateTime, nullable=True)
     last_updated_at: Mapped[datetime] = mapped_column(

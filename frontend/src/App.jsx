@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import LoginPage from './components/Login/LoginPage';
+import UserSelectionPage from './pages/UserSelectionPage';
 import ProjectSelectionPage from './pages/Student/ProjectSelectionPage';
 import AssessmentPage from './pages/Student/AssessmentPage';
 import TeacherProjectList from './pages/Teacher/TeacherProjectList';
@@ -14,6 +15,10 @@ const AppContent = ({ isAuthenticated, handleLoginSuccess, handleLogout }) => {
   const router = createBrowserRouter([
     {
       path: "/",
+      element: <UserSelectionPage />,
+    },
+    {
+      path: "/login",
       element: isAuthenticated ? (
         <Navigate to="/projects" replace />
       ) : (
@@ -25,7 +30,7 @@ const AppContent = ({ isAuthenticated, handleLoginSuccess, handleLogout }) => {
       element: isAuthenticated ? (
         <ProjectSelectionPage onLogout={handleLogout} />
       ) : (
-        <Navigate to="/" replace />
+        <Navigate to="/login" replace />
       ),
     },
     {
@@ -33,7 +38,7 @@ const AppContent = ({ isAuthenticated, handleLoginSuccess, handleLogout }) => {
       element: isAuthenticated ? (
         <AssessmentPage />
       ) : (
-        <Navigate to="/" replace />
+        <Navigate to="/login" replace />
       ),
     },
     {

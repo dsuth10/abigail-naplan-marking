@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { studentApi } from '../../services/api';
 import SplitScreenLayout from '../../components/Editor/SplitScreenLayout';
@@ -13,6 +13,7 @@ const AssessmentPage = () => {
   const [student, setStudent] = useState(null);
   const [submission, setSubmission] = useState(null);
   const [content, setContent] = useState('');
+  const [plainText, setPlainText] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(40 * 60); // 40 minutes in seconds
@@ -29,7 +30,10 @@ const AssessmentPage = () => {
         setStudent(studentRes.data);
         if (subRes.data) {
           setSubmission(subRes.data);
-          setContent(subRes.data.content_raw);
+          // Prioritize HTML content, fallback to raw
+          const initialHtml = subRes.data.content_html || subRes.data.content_raw;
+          setContent(initialHtml);
+          setPlainText(subRes.data.content_raw || '');
         }
       } catch (error) {
         console.error('Error fetching assessment data:', error);
@@ -59,11 +63,15 @@ const AssessmentPage = () => {
   }, [timeRemaining, submission]);
 
   // Debounced autosave
-  const debouncedSave = useCallback(
-    debounce(async (newContent) => {
+  const debouncedSave = useMemo(
+    () => debounce(async (contentData) => {
       setSaving(true);
       try {
-        await studentApi.updateDraft(projectId, newContent);
+        await studentApi.updateDraft(projectId, {
+          content_raw: contentData.text,
+          content_html: contentData.html,
+          content_json: contentData.json
+        });
       } catch (error) {
         console.error('Error autosaving:', error);
       } finally {
@@ -73,9 +81,10 @@ const AssessmentPage = () => {
     [projectId]
   );
 
-  const handleContentChange = (newContent) => {
-    setContent(newContent);
-    debouncedSave(newContent);
+  const handleContentChange = (contentData) => {
+    setContent(contentData.html);
+    setPlainText(contentData.text);
+    debouncedSave(contentData);
   };
 
   const handleSubmit = async () => {
@@ -98,7 +107,7 @@ const AssessmentPage = () => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const wordCount = content.trim().split(/\s+/).filter(word => word.length > 0).length;
+  const wordCount = plainText.trim().split(/\s+/).filter(word => word.length > 0).length;
 
   if (loading) {
     return (
