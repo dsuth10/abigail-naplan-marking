@@ -20,7 +20,7 @@ const TeacherLayout = ({ children }) => {
           </button>
         </header>
 
-        <div className="flex-1 overflow-y-auto scrollbar-hide p-6 md:p-10">
+        <div className="flex-1 overflow-y-auto p-6 md:p-10">
           <div className="mx-auto max-w-[1600px] flex flex-col gap-10">
             {children}
           </div>

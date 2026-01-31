@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { rosterApi, studentApi } from '../../services/api';
 import {
   Upload,
@@ -16,7 +15,6 @@ import {
 } from 'lucide-react';
 
 const Rostering = () => {
-  const navigate = useNavigate();
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showUpload, setShowUpload] = useState(false);

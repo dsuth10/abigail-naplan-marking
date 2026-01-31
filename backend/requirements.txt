@@ -10,3 +10,4 @@ passlib[bcrypt]
 python-dotenv
 pytest
 httpx
+requests>=2.31.0

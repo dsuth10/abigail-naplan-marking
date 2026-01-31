@@ -7,7 +7,14 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('student_token');
+  const url = config.url ?? '';
+  const isStudentRoute = url.startsWith('/student');
+  const isTeacherRoute = /^\/(projects|roster|submissions|marking|auth\/me)/.test(url);
+  const token = isStudentRoute
+    ? localStorage.getItem('student_token')
+    : isTeacherRoute
+      ? localStorage.getItem('teacher_token')
+      : null;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -23,6 +30,12 @@ export const studentApi = {
   getSubmission: (projectId) => api.get(`/student/submissions/${projectId}`),
   updateDraft: (projectId, contentData) => api.post(`/student/submissions/${projectId}`, contentData),
   submitProject: (projectId) => api.put(`/student/submissions/${projectId}/submit`),
+};
+
+export const teacherAuthApi = {
+  login: (username, password) =>
+    api.post('/auth/login', { username, password }),
+  getMe: () => api.get('/auth/me'),
 };
 
 export const teacherApi = {
@@ -49,6 +62,8 @@ export const submissionApi = {
   getProjectSubmissions: (projectId) => api.get(`/submissions/project/${projectId}`),
   unlockSubmission: (submissionId) => api.post(`/submissions/${submissionId}/unlock`),
   exportSubmissions: (projectId) => api.get(`/submissions/export/${projectId}`, { responseType: 'blob' }),
+  gradeWithAI: (submissionId) => api.post(`/marking/grade/${submissionId}`),
+  getAssessmentResult: (assessmentId) => api.get(`/marking/results/${assessmentId}`),
 };
 
 export default api;

@@ -186,7 +186,7 @@ const ProjectBuilder = () => {
               </div>
             </header>
 
-            <div className="border border-gray-200 rounded-2xl overflow-hidden h-[600px] shadow-inner bg-white">
+            <div className="border border-gray-200 rounded-2xl overflow-hidden h-[600px] flex flex-col shadow-inner bg-white">
               <SplitScreenLayout stimulus={formData}>
                 <Editor
                   value=""

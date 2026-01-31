@@ -7,7 +7,7 @@ const SplitScreenLayout = ({ stimulus, children }) => {
   };
 
   return (
-    <main className="flex flex-1 overflow-hidden">
+    <div className="flex flex-1 overflow-hidden">
       {/* Left Panel: Stimulus Zone (40%) */}
       <section className="w-full md:w-5/12 bg-slate-50 border-r border-border flex flex-col overflow-hidden">
         <div className="overflow-y-auto p-10 lg:p-12 scroll-smooth h-full">
@@ -73,7 +73,7 @@ const SplitScreenLayout = ({ stimulus, children }) => {
       <section className="w-full md:w-7/12 flex flex-col bg-white relative">
         {children}
       </section>
-    </main>
+    </div>
   );
 };
 

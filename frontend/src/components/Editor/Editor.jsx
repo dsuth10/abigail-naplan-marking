@@ -126,7 +126,7 @@ const Editor = ({ value, onChange, disabled, saving }) => {
     <div className="flex flex-col h-full bg-slate-50/30">
       <EditorToolbar editor={editor} disabled={disabled} />
 
-      <div className="flex-1 relative group cursor-text overflow-y-auto">
+      <div className="flex-1 relative group cursor-text overflow-y-auto custom-scrollbar">
         <EditorContent editor={editor} />
 
         {/* Saving Indicator Overlay */}
@@ -147,10 +147,6 @@ const Editor = ({ value, onChange, disabled, saving }) => {
             <span className={`size-2 rounded-full ${disabled ? 'bg-slate-300' : 'bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]'}`}></span>
             {disabled ? 'Read Only' : 'Assessment Active'}
           </span>
-          <span className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-red-400"></span>
-            Spellcheck: Disabled
-          </span>
         </div>
         <div className="flex items-center gap-2">
           {saving ? (
@@ -162,6 +158,21 @@ const Editor = ({ value, onChange, disabled, saving }) => {
       </div>
 
       <style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #e2e8f0;
+          border-radius: 5px;
+          border: 2px solid transparent;
+          background-clip: content-box;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background-color: #cbd5e1;
+        }
         .ProseMirror {
           min-height: 100%;
         }

@@ -46,7 +46,7 @@ const UserSelectionPage = () => {
 
                     {/* Teacher Card */}
                     <button
-                        onClick={() => navigate('/teacher/projects')}
+                        onClick={() => navigate('/teacher/login')}
                         className="group relative flex flex-col items-center text-center p-12 bg-white rounded-[2.5rem] border-2 border-transparent hover:border-secondary/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer"
                     >
                         <div className="size-24 rounded-3xl bg-secondary/10 text-secondary flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500 shadow-inner">

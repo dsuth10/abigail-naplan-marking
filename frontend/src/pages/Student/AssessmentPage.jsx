@@ -122,7 +122,7 @@ const AssessmentPage = () => {
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-background text-slate-900 font-body">
       {/* Global Assessment Header */}
-      <header className="shrink-0 flex items-center justify-between border-b border-border bg-white px-8 py-4 h-20 shadow-sm z-10">
+      <header className="shrink-0 flex items-center justify-between border-b border-border bg-white px-8 py-4 h-20 shadow-sm z-10 relative">
         {/* Left: Student Info */}
         <div className="flex items-center gap-3">
           <div className="flex items-center justify-center size-12 rounded-full bg-primary/10 text-primary border-2 border-primary/5">
@@ -162,7 +162,7 @@ const AssessmentPage = () => {
       </header>
 
       {/* Main Split Layout */}
-      <main className="flex-1 overflow-hidden">
+      <main className="flex flex-col flex-1 overflow-hidden">
         <SplitScreenLayout stimulus={project}>
           <Editor
             value={content}

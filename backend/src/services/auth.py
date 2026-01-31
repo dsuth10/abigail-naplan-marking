@@ -47,27 +47,29 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from src.database import get_db
-from src.models.base import Student
+from src.models.base import Student, Teacher
 import uuid
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/student/auth/login")
+teacher_oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/login")
+
 
 def get_current_student(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> Student:
     payload = decode_token(token)
     if payload is None:
         raise HTTPException(
-            status_code=status.HTTP_01_UNAUTHORIZED,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    
+
     student_id = payload.get("sub")
-    if student_id is None:
+    if student_id is None or payload.get("role") != "student":
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
         )
-    
+
     student = db.query(Student).filter(Student.id == uuid.UUID(student_id)).first()
     if student is None:
         raise HTTPException(
@@ -75,3 +77,36 @@ def get_current_student(token: str = Depends(oauth2_scheme), db: Session = Depen
             detail="Student not found",
         )
     return student
+
+
+def get_current_teacher(
+    token: str = Depends(teacher_oauth2_scheme), db: Session = Depends(get_db)
+) -> Teacher:
+    payload = decode_token(token)
+    if payload is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    if payload.get("role") != "teacher":
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+        )
+
+    teacher_id = payload.get("sub")
+    if teacher_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+        )
+
+    teacher = db.query(Teacher).filter(Teacher.id == uuid.UUID(teacher_id)).first()
+    if teacher is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Teacher not found",
+        )
+    return teacher

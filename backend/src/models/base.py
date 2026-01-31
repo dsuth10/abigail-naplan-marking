@@ -30,6 +30,18 @@ class Student(Base):
     )
 
 
+class Teacher(Base):
+    __tablename__ = "teachers"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    username: Mapped[str] = mapped_column(String, unique=True, nullable=False)
+    password_hash: Mapped[str] = mapped_column(String, nullable=False)
+    full_name: Mapped[str] = mapped_column(String, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc)
+    )
+
+
 class Project(Base):
     __tablename__ = "projects"
 
@@ -69,3 +81,27 @@ class Submission(Base):
 
     student: Mapped["Student"] = relationship(back_populates="submissions")
     project: Mapped["Project"] = relationship(back_populates="submissions")
+    assessment_results: Mapped[List["AssessmentResult"]] = relationship(
+        back_populates="submission", cascade="all, delete-orphan"
+    )
+
+
+class AssessmentResult(Base):
+    __tablename__ = "assessment_results"
+
+    id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
+    submission_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("submissions.id", ondelete="CASCADE"), nullable=False
+    )
+    genre: Mapped[str] = mapped_column(String, nullable=False)  # NARRATIVE, PERSUASIVE
+    total_score: Mapped[int] = mapped_column(nullable=False)
+    max_score: Mapped[int] = mapped_column(nullable=False)
+    generated_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc)
+    )
+    overall_strengths: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    overall_weaknesses: Mapped[list] = mapped_column(JSON, nullable=False, default=list)
+    criteria_scores: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    full_report_md: Mapped[str] = mapped_column(Text, nullable=False, default="")
+
+    submission: Mapped["Submission"] = relationship(back_populates="assessment_results")

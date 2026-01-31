@@ -4,17 +4,24 @@ from typing import List
 from uuid import UUID
 
 from src.database import get_db
+from src.models.base import Teacher
 from src.schemas.submission import SubmissionResponse
 from src.services.submission import SubmissionService
 from src.services.export_service import ExportService
+from src.services.auth import get_current_teacher
 from src.api.ws import manager
 from fastapi.responses import StreamingResponse
 import io
 
 router = APIRouter()
 
+
 @router.get("/export/{project_id}")
-async def export_submissions(project_id: UUID, db: Session = Depends(get_db)):
+async def export_submissions(
+    project_id: UUID,
+    db: Session = Depends(get_db),
+    current_teacher: Teacher = Depends(get_current_teacher),
+):
     """Export all submitted assessments for a project as a ZIP of text files."""
     zip_buffer, filename = ExportService.export_project_submissions_to_zip(db, project_id)
     if not zip_buffer:
@@ -27,17 +34,30 @@ async def export_submissions(project_id: UUID, db: Session = Depends(get_db)):
     )
 
 @router.get("", response_model=List[SubmissionResponse])
-async def list_submissions(db: Session = Depends(get_db)):
+async def list_submissions(
+    db: Session = Depends(get_db),
+    current_teacher: Teacher = Depends(get_current_teacher),
+):
     """List all submissions for the teacher dashboard."""
     return SubmissionService.get_all_submissions(db)
 
+
 @router.get("/project/{project_id}", response_model=List[SubmissionResponse])
-async def list_project_submissions(project_id: UUID, db: Session = Depends(get_db)):
+async def list_project_submissions(
+    project_id: UUID,
+    db: Session = Depends(get_db),
+    current_teacher: Teacher = Depends(get_current_teacher),
+):
     """List all submissions for a specific project."""
     return SubmissionService.get_project_submissions(db, project_id)
 
+
 @router.post("/{submission_id}/unlock", response_model=SubmissionResponse)
-async def unlock_submission(submission_id: UUID, db: Session = Depends(get_db)):
+async def unlock_submission(
+    submission_id: UUID,
+    db: Session = Depends(get_db),
+    current_teacher: Teacher = Depends(get_current_teacher),
+):
     """Unlock a submission, returning it to draft mode."""
     submission = SubmissionService.unlock_submission(db, submission_id)
     if not submission:

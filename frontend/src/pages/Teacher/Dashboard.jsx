@@ -10,7 +10,8 @@ import {
   Unlock,
   ArrowLeft,
   Search,
-  Filter
+  Filter,
+  Sparkles
 } from 'lucide-react';
 
 const TeacherDashboard = () => {
@@ -22,6 +23,7 @@ const TeacherDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('ALL');
+  const [gradingStatus, setGradingStatus] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,6 +85,27 @@ const TeacherDashboard = () => {
       await submissionApi.unlockSubmission(submissionId);
     } catch (error) {
       console.error('Error unlocking submission:', error);
+    }
+  };
+
+  const handleGradeWithAI = async (submissionId) => {
+    setGradingStatus(prev => ({ ...prev, [submissionId]: 'loading' }));
+    try {
+      const response = await submissionApi.gradeWithAI(submissionId);
+      setGradingStatus(prev => ({ ...prev, [submissionId]: 'complete' }));
+      const data = response.data;
+      if (window.confirm(
+        `Assessment Complete!\n\nScore: ${data.total_score}/${data.max_score}\n\nView detailed results?`
+      )) {
+        navigate(`/teacher/assessment/${data.assessment_id}`);
+      }
+    } catch (error) {
+      setGradingStatus(prev => ({ ...prev, [submissionId]: 'error' }));
+      if (error.response?.status === 503) {
+        alert('Ollama service not running. Please start Ollama first (ollama serve, ollama pull mistral).');
+      } else {
+        alert('Grading failed: ' + (error.response?.data?.detail || error.message));
+      }
     }
   };
 
@@ -202,16 +225,31 @@ const TeacherDashboard = () => {
                   </div>
                 </div>
 
-                <div className="mt-auto flex justify-between items-center">
+                <div className="mt-auto flex justify-between items-center gap-2">
                   <StatusBadge status={status} />
                   {status === 'SUBMITTED' && (
-                    <button
-                      onClick={() => handleUnlock(sub.id)}
-                      className="p-2 text-slate-300 hover:text-secondary hover:bg-secondary/10 rounded-lg transition-all"
-                      title="Return to Draft"
-                    >
-                      <Unlock size={20} />
-                    </button>
+                    <div className="flex gap-2 items-center">
+                      <button
+                        onClick={() => handleGradeWithAI(sub.id)}
+                        disabled={gradingStatus[sub.id] === 'loading'}
+                        className="px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-lg font-bold text-xs uppercase tracking-wider hover:shadow-lg transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        title="Grade with AI"
+                      >
+                        {gradingStatus[sub.id] === 'loading' ? (
+                          <span className="animate-spin size-4 border-2 border-white border-t-transparent rounded-full" />
+                        ) : (
+                          <Sparkles size={16} />
+                        )}
+                        Grade with AI
+                      </button>
+                      <button
+                        onClick={() => handleUnlock(sub.id)}
+                        className="p-2 text-slate-300 hover:text-secondary hover:bg-secondary/10 rounded-lg transition-all"
+                        title="Return to Draft"
+                      >
+                        <Unlock size={20} />
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>

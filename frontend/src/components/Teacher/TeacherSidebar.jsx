@@ -58,16 +58,26 @@ const TeacherSidebar = () => {
       </div>
 
       {/* User Profile Bottom */}
-      <div className="flex items-center gap-4 px-4 py-4 mt-auto rounded-3xl bg-slate-50 border border-slate-100 cursor-pointer hover:bg-slate-100 transition-all group">
+      <div className="flex items-center gap-4 px-4 py-4 mt-auto rounded-3xl bg-slate-50 border border-slate-100 group">
         <div className="relative">
           <div className="bg-primary/10 rounded-2xl size-12 flex items-center justify-center text-primary font-bold text-lg border-2 border-white shadow-sm group-hover:scale-105 transition-transform">T</div>
           <div className="absolute -bottom-1 -right-1 size-4 bg-success rounded-full border-2 border-white"></div>
         </div>
-        <div className="flex flex-col min-w-0">
+        <div className="flex flex-col min-w-0 flex-1">
           <p className="text-slate-900 text-sm font-bold truncate">Staff Member</p>
           <p className="text-slate-400 text-xs font-bold uppercase tracking-widest truncate">Teacher</p>
         </div>
-        <span className="material-symbols-outlined ml-auto text-slate-300 group-hover:text-slate-500 transition-colors" style={{ fontSize: '20px' }}>settings</span>
+        <button
+          type="button"
+          onClick={() => {
+            localStorage.removeItem('teacher_token');
+            window.location.href = '/teacher/login';
+          }}
+          className="p-2 rounded-xl text-slate-400 hover:bg-slate-200 hover:text-slate-600 transition-colors"
+          title="Sign out"
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>logout</span>
+        </button>
       </div>
     </aside>
   );
